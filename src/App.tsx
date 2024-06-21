@@ -4,7 +4,7 @@ import "./styles/global.css";
 
 function App() {
   return (
-    <div className="flex h-screen overflow-hidden">
+    <div className="flex h-screen overflow-hidden font-montserrat">
       <Sidebar />
       <AppRoutes />
     </div>

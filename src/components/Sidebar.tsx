@@ -12,7 +12,7 @@ const Sidebar: React.FC = () => {
           >
             _
           </div>
-          <h1 className="text-xl font-bold">VERENA-WEIKERT</h1>
+          <h1 className="text-lg font-bold">VERENA-WEIKERT</h1>
         </div>
         <div className="w-full flex flex-col gap-2 justify-center items-center">
           <img
@@ -21,7 +21,7 @@ const Sidebar: React.FC = () => {
             className="rounded-full w-[150px] h-[150px] mt-4"
           />
           <h4 className="font-bold">NOME DO USUÁRIO</h4>
-          <p className="text-[#FEAF00]">atribuição</p>
+          <p className="text-[#feae00]">atribuição</p>
         </div>
       </div>
       <div className="py-4 flex justify-center gap-3">
