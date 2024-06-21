@@ -1,7 +1,9 @@
-import React from "react";
-import LogoutIcon from "../assets/icons/LogoutIcon";
+import React, { FC } from "react";
+import LogoutIcon from "../../assets/icons/LogoutIcon";
 
-const Sidebar: React.FC = () => {
+export interface AdminSidebarProps {}
+
+const AdminSidebar: FC<AdminSidebarProps> = () => {
   return (
     <div className="fixed left-0 top-0 bottom-0 bg-[#F2EAE1] w-64 py-4 px-6 flex flex-col justify-between">
       <div>
@@ -24,7 +26,12 @@ const Sidebar: React.FC = () => {
           <p className="text-[#feae00]">atribuição</p>
         </div>
       </div>
-      <div className="py-4 flex justify-center gap-3">
+      <div
+        className="py-4 flex justify-center gap-3"
+        onClick={() => {
+          console.log("sair");
+        }}
+      >
         <span>Sair</span>
         <LogoutIcon />
       </div>
@@ -32,4 +39,4 @@ const Sidebar: React.FC = () => {
   );
 };
 
-export default Sidebar;
+export default AdminSidebar;
