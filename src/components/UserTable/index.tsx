@@ -1,10 +1,13 @@
 import React, { FC } from "react";
 import DeleteIcon from "../../assets/icons/DeleteIcon";
 import UpdateIcon from "../../assets/icons/UpdateIcon";
+import { UserType } from "../../interfaces/UserType";
 
-export interface UserTableProps {}
+export interface UserTableProps {
+  dataUsers: UserType[];
+}
 
-const UserTable: FC<UserTableProps> = () => {
+const UserTable: FC<UserTableProps> = ({ dataUsers }: UserTableProps) => {
   return (
     <div className="mt-4 overflow-x-auto">
       <table className="min-w-full">
@@ -39,114 +42,46 @@ const UserTable: FC<UserTableProps> = () => {
           </tr>
         </thead>
         <tbody className="bg-[#f5f5f5]">
-          <tr className="hover:bg-[#ffffff]">
-            <td className="py-4 px-6 border-b-8 border-[#E5E5E5] rounded-l-xl">
-              <img
-                src="https://cdn.pixabay.com/photo/2017/11/10/05/48/user-2935527_1280.png"
-                alt=""
-                className="rounded-full w-[50px] h-[50px] mt-4"
-              />
-            </td>
-            <td className="py-4 px-6 border-b-8 border-[#E5E5E5]">
-              João Silva
-            </td>
-            <td className="py-4 px-6 border-b-8 border-[#E5E5E5]">
-              joao.silva@example.com
-            </td>
-            <td className="py-4 px-6 border-b-8 border-[#E5E5E5]">
-              (11) 1234-5678
-            </td>
-            <td className="py-4 px-6 border-b-8 border-[#E5E5E5] rounded-r-xl">
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => {
-                    console.log("alterar");
-                  }}
-                >
-                  <UpdateIcon />
-                </button>
-                <button
-                  onClick={() => {
-                    console.log("deletar");
-                  }}
-                >
-                  <DeleteIcon />
-                </button>
-              </div>
-            </td>
-          </tr>
-          <tr className="hover:bg-[#ffffff]">
-            <td className="py-4 px-6 border-b-8 border-[#E5E5E5] rounded-l-xl">
-              <img
-                src="https://cdn.pixabay.com/photo/2017/11/10/05/48/user-2935527_1280.png"
-                alt=""
-                className="rounded-full w-[50px] h-[50px] mt-4"
-              />
-            </td>
-            <td className="py-4 px-6 border-b-8 border-[#E5E5E5]">
-              João Silva
-            </td>
-            <td className="py-4 px-6 border-b-8 border-[#E5E5E5]">
-              joao.silva@example.com
-            </td>
-            <td className="py-4 px-6 border-b-8 border-[#E5E5E5]">
-              (11) 1234-5678
-            </td>
-            <td className="py-4 px-6 border-b-8 border-[#E5E5E5] rounded-r-xl">
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => {
-                    console.log("alterar");
-                  }}
-                >
-                  <UpdateIcon />
-                </button>
-                <button
-                  onClick={() => {
-                    console.log("deletar");
-                  }}
-                >
-                  <DeleteIcon />
-                </button>
-              </div>
-            </td>
-          </tr>
-          <tr className="hover:bg-[#ffffff]">
-            <td className="py-4 px-6 border-b-8 border-[#E5E5E5] rounded-l-xl">
-              <img
-                src="https://cdn.pixabay.com/photo/2017/11/10/05/48/user-2935527_1280.png"
-                alt=""
-                className="rounded-full w-[50px] h-[50px] mt-4"
-              />
-            </td>
-            <td className="py-4 px-6 border-b-8 border-[#E5E5E5]">
-              João Silva
-            </td>
-            <td className="py-4 px-6 border-b-8 border-[#E5E5E5]">
-              joao.silva@example.com
-            </td>
-            <td className="py-4 px-6 border-b-8 border-[#E5E5E5]">
-              (11) 1234-5678
-            </td>
-            <td className="py-4 px-6 border-b-8 border-[#E5E5E5] rounded-r-xl">
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => {
-                    console.log("alterar");
-                  }}
-                >
-                  <UpdateIcon />
-                </button>
-                <button
-                  onClick={() => {
-                    console.log("deletar");
-                  }}
-                >
-                  <DeleteIcon />
-                </button>
-              </div>
-            </td>
-          </tr>
+          {dataUsers.map((item: UserType, index: number) => {
+            return (
+              <tr key={index} className="hover:bg-[#ffffff]">
+                <td className="py-4 px-6 border-b-8 border-[#E5E5E5] rounded-l-xl">
+                  <img
+                    src={item.url_image}
+                    alt={`user: ${item.nm_user}`}
+                    className="rounded-full w-[50px] h-[50px] mt-4"
+                  />
+                </td>
+                <td className="py-4 px-6 border-b-8 border-[#E5E5E5]">
+                  {item.nm_user}
+                </td>
+                <td className="py-4 px-6 border-b-8 border-[#E5E5E5]">
+                  {item.ds_email}
+                </td>
+                <td className="py-4 px-6 border-b-8 border-[#E5E5E5]">
+                  {item.nb_telephone}
+                </td>
+                <td className="py-4 px-6 border-b-8 border-[#E5E5E5] rounded-r-xl">
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => {
+                        console.log(`alterar usuário: ${item.cd_user}`);
+                      }}
+                    >
+                      <UpdateIcon />
+                    </button>
+                    <button
+                      onClick={() => {
+                        console.log(`deletar usuário: ${item.cd_user}`);
+                      }}
+                    >
+                      <DeleteIcon />
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>
