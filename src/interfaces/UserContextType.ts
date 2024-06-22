@@ -3,6 +3,7 @@ export interface UserData {
   email: string;
   telephone: string;
   photoUrl: string;
+  tp_user: string;
 }
 
 export interface UserContextType {

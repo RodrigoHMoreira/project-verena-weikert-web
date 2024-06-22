@@ -1,13 +1,17 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import DeleteIcon from "../../assets/icons/DeleteIcon";
 import UpdateIcon from "../../assets/icons/UpdateIcon";
 import { UserType } from "../../interfaces/UserType";
 
 export interface UserTableProps {
   dataUsers: UserType[];
+  toggleModal: (id: string) => void;
 }
 
-const UserTable: FC<UserTableProps> = ({ dataUsers }: UserTableProps) => {
+const UserTable: FC<UserTableProps> = ({
+  dataUsers,
+  toggleModal,
+}: UserTableProps) => {
   return (
     <div className="mt-4 overflow-x-auto">
       <table className="min-w-full">
@@ -65,7 +69,7 @@ const UserTable: FC<UserTableProps> = ({ dataUsers }: UserTableProps) => {
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => {
-                        console.log(`alterar usuário: ${item.cd_user}`);
+                        toggleModal(String(item.cd_user));
                       }}
                     >
                       <UpdateIcon />

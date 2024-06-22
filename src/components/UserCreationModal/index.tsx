@@ -1,31 +1,16 @@
-import React, { useContext, useState } from "react";
-import { UserContext } from "../../contexts/userContext";
-import { UserType } from "../../interfaces/UserType";
 import UserCreationForm from "../UserCreationForm";
 
 export interface UserCreationModalProps {
-  toggleModal: () => void;
-  createUser: (body: UserType) => Promise<void>;
+  idUser: string;
+  toggleModal: (id: string) => void;
+  handleSubmit: (id: string) => void;
 }
 
 const UserCreationModal = ({
+  idUser,
   toggleModal,
-  createUser,
+  handleSubmit,
 }: UserCreationModalProps) => {
-  const { userData } = useContext(UserContext);
-
-  const handleSubmit = () => {
-    const body = {
-      nm_user: userData.name,
-      ds_email: userData.email,
-      nb_telephone: userData.telephone,
-      url_image: userData.photoUrl,
-      tp_user: "guest",
-    };
-
-    createUser(body);
-  };
-
   return (
     <div
       className="relative z-10"
@@ -47,7 +32,7 @@ const UserCreationModal = ({
                     className="text-base font-semibold leading-6 text-gray-900"
                     id="modal-title"
                   >
-                    Adicionar novo usuário:
+                    {`${idUser === "" ? "Adicionar novo" : "Editar"} usuário:`}
                   </h3>
                   <div className="mt-2">
                     <UserCreationForm />
@@ -57,13 +42,13 @@ const UserCreationModal = ({
             </div>
             <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse justify-between w-full sm:px-6">
               <button
-                onClick={handleSubmit}
+                onClick={() => handleSubmit(idUser)}
                 className="inline-flex w-full justify-center rounded-md bg-[#feae00]  px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-[#fe9000] sm:ml-3 sm:w-auto"
               >
-                Adicionar
+                {`${idUser === "" ? "Adicionar" : "Editar"}`}
               </button>
               <button
-                onClick={toggleModal}
+                onClick={() => toggleModal("")}
                 className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-100 sm:mt-0 sm:w-auto"
               >
                 Cancelar

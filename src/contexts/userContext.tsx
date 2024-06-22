@@ -12,6 +12,7 @@ export const UserContext = createContext<UserContextType>({
     telephone: "",
     photoUrl:
       "https://cdn.pixabay.com/photo/2017/11/10/05/48/user-2935527_1280.png",
+    tp_user: "",
   },
   updateUserData: () => {},
   updatePhotoUrl: (newUrl: string) => {},
@@ -24,6 +25,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     telephone: "",
     photoUrl:
       "https://cdn.pixabay.com/photo/2017/11/10/05/48/user-2935527_1280.png",
+    tp_user: "",
   });
 
   const updateUserData = (newData: Partial<UserData>) => {
