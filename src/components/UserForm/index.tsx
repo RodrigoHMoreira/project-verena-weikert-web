@@ -1,15 +1,33 @@
-import React, { FC, useContext, useState } from "react";
+import React, { FC, useContext, useEffect, useState } from "react";
 import { UserContext } from "../../contexts/userContext";
+import { formatTelephone } from "../../helpers/utils";
 
-export interface UserCreationFormProps {}
+export interface UserFormProps {}
 
-const UserCreationForm: FC<UserCreationFormProps> = () => {
-  const { userData, updateUserData, updatePhotoUrl } = useContext(UserContext);
+const UserForm: FC<UserFormProps> = () => {
+  const {
+    userData,
+    validationErrors,
+    setValidationErrors,
+    updateUserData,
+    updatePhotoUrl,
+  } = useContext(UserContext);
   const [, setImageFile] = useState<File | null>(null);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    dataType: "name" | "email" | "telephone"
+  ) => {
+    setValidationErrors([""]);
     const { name, value } = e.target;
-    updateUserData({ [name]: value });
+
+    if (dataType === "telephone") {
+      const formattedValue = formatTelephone(value);
+
+      updateUserData({ [name]: formattedValue });
+    } else {
+      updateUserData({ [name]: value });
+    }
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,10 +55,13 @@ const UserCreationForm: FC<UserCreationFormProps> = () => {
               name="name"
               id="name"
               autoComplete="given-name"
-              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-none sm:text-sm sm:leading-6"
+              className="block w-full rounded-md border-0 px-3 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-none sm:text-sm sm:leading-6"
               value={userData.name}
-              onChange={handleChange}
+              onChange={(e) => handleChange(e, "name")}
             />
+            {validationErrors.includes("Nome") && (
+              <span className="text-red-600">O campo Nome está vazio!</span>
+            )}
           </div>
         </div>
         <div className="sm:col-span-3">
@@ -56,10 +77,13 @@ const UserCreationForm: FC<UserCreationFormProps> = () => {
               name="email"
               id="email"
               autoComplete="email"
-              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-none sm:text-sm sm:leading-6"
+              className="block w-full rounded-md border-0 px-3 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-none sm:text-sm sm:leading-6"
               value={userData.email}
-              onChange={handleChange}
+              onChange={(e) => handleChange(e, "email")}
             />
+            {validationErrors.includes("E-mail") && (
+              <span className="text-red-600">O campo E-mail está vazio!</span>
+            )}
           </div>
         </div>
       </div>
@@ -71,14 +95,17 @@ const UserCreationForm: FC<UserCreationFormProps> = () => {
           >
             Telefone
           </label>
+          {validationErrors.includes("Telefone") && (
+            <span className="text-red-600">O campo E-Telefone está vazio!</span>
+          )}
           <div className="mt-2">
             <input
               type="text"
               name="telephone"
               id="telephone"
-              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-none sm:text-sm sm:leading-6"
+              className="block w-full rounded-md border-0 px-3 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-none sm:text-sm sm:leading-6"
               value={userData.telephone}
-              onChange={handleChange}
+              onChange={(e) => handleChange(e, "telephone")}
             />
           </div>
         </div>
@@ -116,4 +143,4 @@ const UserCreationForm: FC<UserCreationFormProps> = () => {
   );
 };
 
-export default UserCreationForm;
+export default UserForm;

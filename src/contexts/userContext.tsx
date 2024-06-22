@@ -14,6 +14,8 @@ export const UserContext = createContext<UserContextType>({
       "https://cdn.pixabay.com/photo/2017/11/10/05/48/user-2935527_1280.png",
     tp_user: "",
   },
+  validationErrors: [""],
+  setValidationErrors: () => {},
   updateUserData: () => {},
   updatePhotoUrl: (newUrl: string) => {},
 });
@@ -28,6 +30,8 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     tp_user: "",
   });
 
+  const [validationErrors, setValidationErrors] = useState<string[]>([""]);
+
   const updateUserData = (newData: Partial<UserData>) => {
     setUserData({ ...userData, ...newData });
   };
@@ -37,7 +41,15 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   };
 
   return (
-    <UserContext.Provider value={{ userData, updateUserData, updatePhotoUrl }}>
+    <UserContext.Provider
+      value={{
+        userData,
+        validationErrors,
+        setValidationErrors,
+        updateUserData,
+        updatePhotoUrl,
+      }}
+    >
       {children}
     </UserContext.Provider>
   );

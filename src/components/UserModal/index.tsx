@@ -1,4 +1,4 @@
-import UserCreationForm from "../UserCreationForm";
+import UserForm from "../UserForm";
 
 export interface UserCreationModalProps {
   idUser: string;
@@ -35,7 +35,7 @@ const UserCreationModal = ({
                     {`${idUser === "" ? "Adicionar novo" : "Editar"} usuário:`}
                   </h3>
                   <div className="mt-2">
-                    <UserCreationForm />
+                    <UserForm />
                   </div>
                 </div>
               </div>

@@ -5,12 +5,14 @@ import { UserType } from "../../interfaces/UserType";
 
 export interface UserTableProps {
   dataUsers: UserType[];
-  toggleModal: (id: string) => void;
+  toggleModalCreation: (id: string) => void;
+  toggleModalConfirmation: (id: string) => void;
 }
 
 const UserTable: FC<UserTableProps> = ({
   dataUsers,
-  toggleModal,
+  toggleModalCreation,
+  toggleModalConfirmation,
 }: UserTableProps) => {
   return (
     <div className="mt-4 overflow-x-auto">
@@ -69,14 +71,14 @@ const UserTable: FC<UserTableProps> = ({
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => {
-                        toggleModal(String(item.cd_user));
+                        toggleModalCreation(String(item.cd_user));
                       }}
                     >
                       <UpdateIcon />
                     </button>
                     <button
                       onClick={() => {
-                        console.log(`deletar usuário: ${item.cd_user}`);
+                        toggleModalConfirmation(String(item.cd_user));
                       }}
                     >
                       <DeleteIcon />
