@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import { UserProvider } from "./contexts/userContext";
+import { PaginationProvider } from "./contexts/paginationContext";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -10,7 +11,9 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <UserProvider>
-      <App />
+      <PaginationProvider>
+        <App />
+      </PaginationProvider>
     </UserProvider>
   </React.StrictMode>
 );

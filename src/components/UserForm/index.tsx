@@ -1,5 +1,5 @@
-import React, { FC, useContext, useEffect, useState } from "react";
-import { UserContext } from "../../contexts/userContext";
+import React, { FC, useState } from "react";
+import { useUserContext } from "../../contexts/userContext";
 import { formatTelephone } from "../../helpers/utils";
 
 export interface UserFormProps {}
@@ -11,7 +11,8 @@ const UserForm: FC<UserFormProps> = () => {
     setValidationErrors,
     updateUserData,
     updatePhotoUrl,
-  } = useContext(UserContext);
+  } = useUserContext();
+
   const [, setImageFile] = useState<File | null>(null);
 
   const handleChange = (

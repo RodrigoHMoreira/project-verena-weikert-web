@@ -1,16 +1,18 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import SearchIcon from "../../assets/icons/SearchIcon";
 import AlertBox from "../../components/AlertBox";
-import SearchHeader from "../../components/SearchHeader";
 import UserConfirmationModal from "../../components/UserConfirmationModal";
 import UserModal from "../../components/UserModal";
 import UserTable from "../../components/UserTable";
-import { UserContext } from "../../contexts/userContext";
+import { usePaginationContext } from "../../contexts/paginationContext";
+import { useUserContext } from "../../contexts/userContext";
 import { UserType } from "../../interfaces/UserType";
 import { apiClient } from "../../services/apiClient";
 
 const Home: React.FC = () => {
-  const { userData, setValidationErrors, updateUserData } =
-    useContext(UserContext);
+  const { userData, setValidationErrors, updateUserData } = useUserContext();
+
+  const { currentPage, itemsPerPage, setTotalPages } = usePaginationContext();
 
   const [users, setUsers] = useState<UserType[]>([]);
   const [, setLoading] = useState<boolean>(false);
@@ -24,6 +26,8 @@ const Home: React.FC = () => {
   const [showAlert, setShowAlert] = useState<boolean>(false);
   const [typeAlert, setTypeAlert] = useState<"success" | "error">("success");
 
+  const [search, setSearch] = useState<string>("");
+
   const toggleModalCreation = (id: string) => {
     setIdUser(id);
     setOpenModalCreation(!openModalCreation);
@@ -34,11 +38,21 @@ const Home: React.FC = () => {
     setOpenModalConfirmation(!openModalConfirmation);
   };
 
-  const getAllUsers: () => Promise<void> = async () => {
+  const getAllUsers: (
+    page: number,
+    limit: number,
+    search: string
+  ) => Promise<void> = async (page: number, limit: number, search: string) => {
     setLoading(true);
     try {
-      const response = await apiClient.get<UserType[]>("/users");
-      const newResponse = response.data.map((item) => {
+      const response = await apiClient.get<{
+        items: UserType[];
+        totalPages: number;
+      }>("/users", {
+        params: { page, limit, search },
+      });
+
+      const newResponse = response.data.items.map((item) => {
         return {
           cd_user: item.cd_user,
           nm_user: item.nm_user,
@@ -50,6 +64,7 @@ const Home: React.FC = () => {
       });
 
       setUsers(newResponse);
+      setTotalPages(response.data.totalPages);
     } catch (error) {
       console.log(error);
     } finally {
@@ -60,7 +75,9 @@ const Home: React.FC = () => {
   const getUserById: (id: string) => Promise<void> = async (id: string) => {
     setLoading(true);
     try {
-      const response = await apiClient.get<UserType>(`/users/${id}`);
+      const response = await apiClient.get<UserType>("/users", {
+        params: { id },
+      });
       const newResponse = {
         name: response.data.nm_user,
         email: response.data.ds_email,
@@ -126,7 +143,7 @@ const Home: React.FC = () => {
       setTypeAlert("success");
       handleShowAlert();
 
-      getAllUsers();
+      getAllUsers(currentPage, itemsPerPage, "");
       setOpenModalCreation(!openModalCreation);
     } catch (error) {
       console.log(error);
@@ -166,7 +183,7 @@ const Home: React.FC = () => {
       setTypeAlert("success");
       handleShowAlert();
 
-      getAllUsers();
+      getAllUsers(currentPage, itemsPerPage, "");
       setOpenModalCreation(!openModalCreation);
     } catch (error) {
       console.log(error);
@@ -191,7 +208,7 @@ const Home: React.FC = () => {
       setReturnMessage(message);
       handleShowAlert();
 
-      getAllUsers();
+      getAllUsers(currentPage, itemsPerPage, "");
       setOpenModalConfirmation(!openModalConfirmation);
     } catch (error) {
       console.log(error);
@@ -231,9 +248,15 @@ const Home: React.FC = () => {
     }, 3000);
   };
 
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    setSearch(value);
+    getAllUsers(1, itemsPerPage, value);
+  };
+
   useEffect(() => {
-    getAllUsers();
-  }, []);
+    getAllUsers(currentPage, itemsPerPage, "");
+  }, [currentPage, itemsPerPage]);
 
   useEffect(() => {
     getUserById(idUser);
@@ -241,10 +264,20 @@ const Home: React.FC = () => {
 
   return (
     <div className="w-full flex-col flex justify-end items-end">
-      <div className="w-[calc(100%-256px)] flex justify-end items-center p-3">
-        <SearchHeader />
+      <div className="w-[calc(100%-256px)] flex justify-end items-center p-3 bg-[#ffffff]">
+        <div className="flex items-center border rounded-xl w-64 bg-[#ffffff] shadow-sm">
+          <input
+            type="text"
+            placeholder="Buscar usuário"
+            className="flex-grow px-4 py-2 rounded-xl focus:outline-none"
+            onChange={(e) => {
+              handleSearch(e);
+            }}
+          />
+          <SearchIcon />
+        </div>
       </div>
-      <div className="bg-[#E5E5E5] pt-[90px] w-[calc(100%-256px)] px-6">
+      <div className="pt-[90px] w-[calc(100%-256px)] px-6">
         <div className="pt-8 flex justify-between">
           <h1 className="text-xl font-bold">Lista de Usuários</h1>
           <button

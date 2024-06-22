@@ -15,3 +15,12 @@ export interface UserContextType {
   updateUserData: (newData: Partial<UserData>) => void;
   updatePhotoUrl: (newUrl: string) => void;
 }
+
+export interface PaginationContextType {
+  currentPage: number;
+  totalPages: number;
+  setTotalPages: React.Dispatch<React.SetStateAction<number>>;
+  itemsPerPage: number;
+  setItemsPerPage: React.Dispatch<React.SetStateAction<number>>;
+  handlePageChange: (pageNumber: number) => void;
+}

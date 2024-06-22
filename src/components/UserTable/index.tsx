@@ -2,6 +2,7 @@ import { FC } from "react";
 import DeleteIcon from "../../assets/icons/DeleteIcon";
 import UpdateIcon from "../../assets/icons/UpdateIcon";
 import { UserType } from "../../interfaces/UserType";
+import Pagination from "../Pagination";
 
 export interface UserTableProps {
   dataUsers: UserType[];
@@ -90,6 +91,7 @@ const UserTable: FC<UserTableProps> = ({
           })}
         </tbody>
       </table>
+      <Pagination totalIndexes={dataUsers.length} />
     </div>
   );
 };

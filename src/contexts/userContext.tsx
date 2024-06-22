@@ -1,24 +1,24 @@
-import React, { createContext, ReactNode, useState } from "react";
-import { UserContextType, UserData } from "../interfaces/UserContextType";
+import React, { createContext, ReactNode, useContext, useState } from "react";
+import { UserContextType, UserData } from "../interfaces/ContextType";
 
 interface UserProviderProps {
   children: ReactNode;
 }
 
-export const UserContext = createContext<UserContextType>({
-  userData: {
-    name: "",
-    email: "",
-    telephone: "",
-    photoUrl:
-      "https://cdn.pixabay.com/photo/2017/11/10/05/48/user-2935527_1280.png",
-    tp_user: "",
-  },
-  validationErrors: [""],
-  setValidationErrors: () => {},
-  updateUserData: () => {},
-  updatePhotoUrl: (newUrl: string) => {},
-});
+export const UserContext = createContext<UserContextType | undefined>(
+  undefined
+);
+
+export const useUserContext = (): UserContextType => {
+  const context = useContext(UserContext);
+
+  if (!context) {
+    throw new Error(
+      "useUserContext deve ser usado dentro de um UserContextProvider"
+    );
+  }
+  return context;
+};
 
 export const UserProvider = ({ children }: UserProviderProps) => {
   const [userData, setUserData] = useState<UserData>({
