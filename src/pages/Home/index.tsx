@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
+import LogoutIcon from "../../assets/icons/LogoutIcon";
 import SearchIcon from "../../assets/icons/SearchIcon";
 import AlertBox from "../../components/AlertBox";
+import Pagination from "../../components/Pagination";
 import UserConfirmationModal from "../../components/UserConfirmationModal";
 import UserModal from "../../components/UserModal";
 import UserTable from "../../components/UserTable";
+import { useAuthContext } from "../../contexts/authContext";
 import { usePaginationContext } from "../../contexts/paginationContext";
 import { useUserContext } from "../../contexts/userContext";
 import { UserType } from "../../interfaces/UserType";
@@ -11,6 +14,7 @@ import { apiClient } from "../../services/apiClient";
 
 const Home: React.FC = () => {
   const { userData, setValidationErrors, updateUserData } = useUserContext();
+  const { logout } = useAuthContext();
 
   const { currentPage, itemsPerPage, setTotalPages } = usePaginationContext();
 
@@ -26,7 +30,10 @@ const Home: React.FC = () => {
   const [showAlert, setShowAlert] = useState<boolean>(false);
   const [typeAlert, setTypeAlert] = useState<"success" | "error">("success");
 
-  const [search, setSearch] = useState<string>("");
+  const [, setSearch] = useState<string>("");
+
+  const storageUser = localStorage.getItem("user");
+  const userInfo: UserType = storageUser && JSON.parse(storageUser);
 
   const toggleModalCreation = (id: string) => {
     setIdUser(id);
@@ -59,7 +66,7 @@ const Home: React.FC = () => {
           ds_email: item.ds_email,
           nb_telephone: item.nb_telephone,
           url_image: item.url_image,
-          tp_user: item.tp_user,
+          hs_password: item.hs_password,
         };
       });
 
@@ -83,7 +90,7 @@ const Home: React.FC = () => {
         email: response.data.ds_email,
         telephone: response.data.nb_telephone,
         photoUrl: response.data.url_image,
-        tp_user: response.data.tp_user,
+        hs_password: response.data.hs_password,
       };
 
       updateUserData(newResponse);
@@ -92,20 +99,6 @@ const Home: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
-
-  const openModalAndResetUserData = () => {
-    const resetUserData = {
-      name: "",
-      email: "",
-      telephone: "",
-      photoUrl:
-        "https://cdn.pixabay.com/photo/2017/11/10/05/48/user-2935527_1280.png",
-      tp_user: "",
-    };
-
-    updateUserData(resetUserData);
-    toggleModalCreation("");
   };
 
   const validateUserBody = (body: UserType): string[] => {
@@ -230,7 +223,6 @@ const Home: React.FC = () => {
       ds_email: userData.email,
       nb_telephone: userData.telephone,
       url_image: userData.photoUrl,
-      tp_user: "guest",
     };
 
     if (id === "") {
@@ -263,29 +255,54 @@ const Home: React.FC = () => {
   }, [idUser]);
 
   return (
-    <div className="w-full flex-col flex justify-end items-end">
-      <div className="w-[calc(100%-256px)] flex justify-end items-center p-3 bg-[#ffffff]">
-        <div className="flex items-center border rounded-xl w-64 bg-[#ffffff] shadow-sm">
-          <input
-            type="text"
-            placeholder="Buscar usuário"
-            className="flex-grow px-4 py-2 rounded-xl focus:outline-none"
-            onChange={(e) => {
-              handleSearch(e);
-            }}
-          />
-          <SearchIcon />
+    <div className="w-full flex flex-col md:justify-between md:items-end">
+      <div className="w-full flex flex-col md:flex-row justify-between lg:items-center py-3 px-4 bg-[#F2EAE1]">
+        <div className="flex flex-col lg:flex-row items-center gap-2 ">
+          <div className="flex items-center gap-2 my-4">
+            <div
+              className="bg-[#F8D442] text-[#F8D442]"
+              style={{ width: "0.5rem", height: "2.5rem" }}
+            >
+              _
+            </div>
+            <h1 className="text-2xl font-bold">VERENA-WEIKERT</h1>
+          </div>
+        </div>
+        <div className="flex gap-3 justify-between md:justify-end">
+          <div className="text-end mt-4">
+            <h4 className="font-bold">{userInfo.nm_user}</h4>
+            <p className="text-[#feae00]">{userInfo.ds_email}</p>
+          </div>
+          <div className="flex flex-col gap-2 lg:gap-4 justify-center items-center">
+            <img
+              src={userInfo.url_image}
+              alt=""
+              className="rounded-full w-[80px] h-[80px]"
+            />
+            <div
+              className="py-4 flex justify-center gap-3 cursor-pointer"
+              onClick={logout}
+            >
+              <span>Sair</span>
+              <LogoutIcon />
+            </div>
+          </div>
         </div>
       </div>
-      <div className="pt-[90px] w-[calc(100%-256px)] px-6">
-        <div className="pt-8 flex justify-between">
-          <h1 className="text-xl font-bold">Lista de Usuários</h1>
-          <button
-            className="bg-[#feae00] text-sm text-white rounded-md px-4 py-4 ml-2 hover:bg-[#fe9000] focus:outline-none"
-            onClick={openModalAndResetUserData}
-          >
-            ADICIONAR NOVO USUÁRIO
-          </button>
+      <div className="pt-6 w-full px-6">
+        <div className="flex flex-col md:flex-row md:justify-between items-center">
+          <h1 className="text-xl font-bold mb-4 md:mb-0">Lista de Usuários</h1>
+          <div className="flex items-center border rounded-xl w-full md:w-64 bg-white shadow-sm">
+            <input
+              type="text"
+              placeholder="Buscar usuário"
+              className="flex-grow px-4 py-2 rounded-xl focus:outline-none"
+              onChange={(e) => {
+                handleSearch(e);
+              }}
+            />
+            <SearchIcon />
+          </div>
         </div>
         <hr className="my-8 border-t-2" />
         <UserTable
@@ -293,6 +310,7 @@ const Home: React.FC = () => {
           toggleModalCreation={toggleModalCreation}
           toggleModalConfirmation={toggleModalConfirmation}
         />
+        <Pagination totalIndexes={users.length} />
       </div>
       {openModalCreation && (
         <UserModal

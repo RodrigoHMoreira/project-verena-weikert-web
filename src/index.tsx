@@ -4,6 +4,7 @@ import "./index.css";
 import App from "./App";
 import { UserProvider } from "./contexts/userContext";
 import { PaginationProvider } from "./contexts/paginationContext";
+import { AuthProvider } from "./contexts/authContext";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -11,9 +12,11 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <UserProvider>
-      <PaginationProvider>
-        <App />
-      </PaginationProvider>
+      <AuthProvider>
+        <PaginationProvider>
+          <App />
+        </PaginationProvider>
+      </AuthProvider>
     </UserProvider>
   </React.StrictMode>
 );

@@ -5,7 +5,7 @@ export interface UserData {
   email: string;
   telephone: string;
   photoUrl: string;
-  tp_user: string;
+  password: string;
 }
 
 export interface UserContextType {
@@ -23,4 +23,10 @@ export interface PaginationContextType {
   itemsPerPage: number;
   setItemsPerPage: React.Dispatch<React.SetStateAction<number>>;
   handlePageChange: (pageNumber: number) => void;
+}
+
+export interface AuthContextType {
+  isAuthenticated: boolean;
+  login: () => void;
+  logout: () => void;
 }

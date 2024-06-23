@@ -1,3 +1,6 @@
+interface UserBody {
+  [key: string]: string;
+}
 export const formatTelephone = (value: string) => {
   value = value.replace(/\D/g, "");
   if (value.length > 11) {
@@ -11,4 +14,19 @@ export const formatTelephone = (value: string) => {
     value = value.replace(/(\d{0,2})/, "($1");
   }
   return value;
+};
+
+export const validateUserBody = (
+  body: UserBody,
+  requiredFields: string[] = []
+): string[] => {
+  const errors: string[] = [];
+
+  requiredFields.forEach((field) => {
+    if (!body[field] || body[field].trim() === "") {
+      errors.push(field);
+    }
+  });
+
+  return errors;
 };

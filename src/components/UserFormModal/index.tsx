@@ -2,9 +2,9 @@ import React, { FC, useState } from "react";
 import { useUserContext } from "../../contexts/userContext";
 import { formatTelephone } from "../../helpers/utils";
 
-export interface UserFormProps {}
+export interface UserFormModalProps {}
 
-const UserForm: FC<UserFormProps> = () => {
+const UserFormModal: FC<UserFormModalProps> = () => {
   const {
     userData,
     validationErrors,
@@ -144,4 +144,4 @@ const UserForm: FC<UserFormProps> = () => {
   );
 };
 
-export default UserForm;
+export default UserFormModal;

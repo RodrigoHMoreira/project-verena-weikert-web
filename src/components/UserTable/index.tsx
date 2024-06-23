@@ -91,7 +91,6 @@ const UserTable: FC<UserTableProps> = ({
           })}
         </tbody>
       </table>
-      <Pagination totalIndexes={dataUsers.length} />
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import UserCreationForm from "../UserForm";
+import UserCreationForm from "../UserFormModal";
 
 export interface UserConfirmationModalProps {
   idUser: string;
