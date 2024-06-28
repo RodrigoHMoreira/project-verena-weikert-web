@@ -265,7 +265,7 @@ const Home: React.FC = () => {
             >
               _
             </div>
-            <h1 className="text-2xl font-bold">VERENA-WEIKERT</h1>
+            <h1 className="text-2xl font-bold">CRUD PROJECT</h1>
           </div>
         </div>
         <div className="flex gap-3 justify-between md:justify-end">

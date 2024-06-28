@@ -1,9 +1,9 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../../contexts/authContext";
 import { useUserContext } from "../../contexts/userContext";
-import { UserType } from "../../interfaces/UserType";
-import { apiClient } from "../../services/apiClient";
+
+
 
 export interface LoginProps {}
 
@@ -37,7 +37,7 @@ const Login: FC<LoginProps> = () => {
         <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
           <div className="flex items-center justify-center space-x-2">
             <div className="bg-[#F8D442] h-10 w-2 md:h-12 md:w-4"></div>
-            <h1 className="text-2xl md:text-3xl font-bold">VERENA-WEIKERT</h1>
+            <h1 className="text-2xl md:text-3xl font-bold">CRUD PROJECT</h1>
           </div>
           <div className="flex flex-col items-center gap-3">
             <h1 className="text-lg md:text-xl font-bold">Login</h1>
